@@ -10,13 +10,10 @@ import tech.csm.vsreq.model.Manufacturer;
 import tech.csm.vsreq.repository.ManufacturerRepository;
 
 @Service
-public class ManufacturerService {
-	
-	@Autowired
-	private ManufacturerRepository manufacturerRepository;
+public interface ManufacturerService {
 
-	public List<Manufacturer> getAllManufacturers(){
-		return manufacturerRepository.findAll();
-	}
+
+	public List<Manufacturer> getAllManufacturers();
+	
 
 }

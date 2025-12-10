@@ -59,16 +59,16 @@
 						</div>
 
 						<div class="col-4 mb-3">
-							<label for="manufacturerId" class="font-weight-bold">Manufacturer</label>
-							<select id="manufacturerId" name="manufacturer.manufacturerId"
+							<label for="manufacturer_id" class="font-weight-bold">Manufacturer</label>
+							<select id="manufacturer_id" name="manufacturer.manufacturer_id"
 								class="form-control" required>
 								<option value="">-select-</option>
 								<c:forEach items="${manufacturers}" var="m">
-									<option value="${m.manufacturerId}">${m.manufacturerName}</option>
+									<option value="${m.manufacturer_id}">${m.manufacturer_name}</option>
 
 								</c:forEach>
 							</select>
-							<div class="invalid-feedback">Please select a department</div>
+							<div class="invalid-feedback">Please select a manufacturer</div>
 						</div>
 
 						<!-- model Dropdown -->
@@ -91,7 +91,7 @@
 								<!-- check on this object things -->
 								<option value="">-select-</option>
 								<c:forEach items="${serviceTypes}" var="s">
-									<option value="${s.serviceTypeId}">${s.serviceTypeName}</option>
+									<option value="${s.service_type_id}">${s.service_type_name}</option>
 
 								</c:forEach>
 							</select>
@@ -116,15 +116,16 @@
 
 					<div class="row">
 
-						<!-- enum priority -->
+						<!-- priority -->
 
 						<div class="col-4 mb-3">
-							<label for="priority" class="font-weight-bold">Priority</label> <select
-								name="priority" id="priority" class="form-control" required>
+							<label for="priority" class="font-weight-bold">Priority</label>
+							 <select name="priority" id="priority" class="form-control" required>
 								<option value="">-select-</option>
-								<c:forEach var="p" items="${priorities}">
-s								  <option value="${p}">${p}</option>
-								</c:forEach>
+								<option value="NORMAL">Normal</option>
+								<option value="URGENT">Urgent</option>
+								<option value="SCHEDULED">Scheduled</option>
+								
 							</select>
 							<div class="invalid-feedback">Please select a priority</div>
 						</div>

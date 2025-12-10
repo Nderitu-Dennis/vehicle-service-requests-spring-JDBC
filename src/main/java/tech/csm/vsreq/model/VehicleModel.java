@@ -16,8 +16,7 @@ public class VehicleModel implements Serializable {
 
 	private Integer model_id;
 	
-	
-	private Integer manufacturer_id;
+	//private Integer manufacturer_id;
 	
 	private String model_name;
 	

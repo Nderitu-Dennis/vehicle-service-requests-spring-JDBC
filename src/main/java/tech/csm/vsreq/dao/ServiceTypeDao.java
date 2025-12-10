@@ -1,10 +1,10 @@
-package tech.csm.vsreq.service;
+package tech.csm.vsreq.dao;
 
 import java.util.List;
 
 import tech.csm.vsreq.model.ServiceType;
 
-public interface ServiceTypeService {
+public interface ServiceTypeDao {
 
 	List<ServiceType> getAllServiceTypes();
 
