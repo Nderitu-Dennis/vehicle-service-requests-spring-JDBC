@@ -23,8 +23,8 @@ import tech.csm.vsreq.model.ServiceSubType;
 import tech.csm.vsreq.model.VehicleModel;
 import tech.csm.vsreq.service.ManufacturerService;
 import tech.csm.vsreq.service.ServiceTypeService;
+import tech.csm.vsreq.service.VehicleModelService;
 import tech.csm.vsreq.util.FileUtil;
-
 
 @Controller
 @RequestMapping("/requests")
@@ -32,13 +32,14 @@ public class VehicleServiceRequestController {
 
 	@Autowired
 	private ManufacturerService manufacturerService;
-	
+
 	@Autowired
 	private ServiceTypeService serviceTypeService;
+	
+	@Autowired
+	private VehicleModelService vehicleModelService;
 
-	
-	
-	//injecting file util
+	// injecting file util
 	@Autowired
 	private FileUtil fileUtil;
 
@@ -47,92 +48,72 @@ public class VehicleServiceRequestController {
 	public String createServiceRequest(Model model) {
 		model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 		model.addAttribute("serviceTypes", serviceTypeService.getAllServiceTypes());
-		
-		//System.out.println("manufacturers^^: " + manufacturerService.getAllManufacturers());
-		//System.out.println("service types^^: " + serviceTypeService.getAllServiceTypes());
 
 		return "form";
 	}
 
-	/*
-	 * // AJAX
-	 * // get models by manufacturer id
-	 * 
-	 * @GetMapping("/models")
-	 * 
-	 * @ResponseBody
-	 * public List<VehicleModel>
-	 * getVehicleModelsByManufacturer(@RequestParam("manufacturerId") Integer
-	 * manufacturerId) {
-	 * return vehicleModelService.getModelsByManufacturer(manufacturerId);
-	 * }
-	 * 
-	 * // Get service sub types by service type id
-	 * 
-	 * @GetMapping("/subtypes")
-	 * 
-	 * @ResponseBody
-	 * public List<ServiceSubType>
-	 * getServiceSubTypeByServiceType(@RequestParam("serviceTypeId") Integer
-	 * serviceTypeId) {
-	 * return serviceSubTypeService.getServiceSubTypeByServiceType(serviceTypeId);
-	 * }
-	 */
+	
+	 // AJAX // get models by manufacturer_id
+	  
+	  @GetMapping("/models")	  
+	  @ResponseBody 
+	  public List<VehicleModel> getVehicleModelsByManufacturerId(@RequestParam("manufacturer_id") Integer
+	  manufacturer_id) { 
+		  System.out.println(">>>models: " + vehicleModelService.getModelsByManufacturerId(manufacturer_id));
 
+		  return  vehicleModelService.getModelsByManufacturerId(manufacturer_id); 
+		  }
+	  
+	  // Get service sub types by service type id
+	  
+	 /* @GetMapping("/subtypes")
+	 * 
+	 * @ResponseBody public List<ServiceSubType>
+	 * getServiceSubTypeByServiceType(@RequestParam("serviceTypeId") Integer
+	 * serviceTypeId) { return
+	 * serviceSubTypeService.getServiceSubTypeByServiceType(serviceTypeId); }
+	 * 
+	 
 	/*
 	 * // save a request
 	 * 
-	 * @PostMapping("/save")
-	 * public String saveRequest(@Valid @ModelAttribute ServiceRequest request,
-	 * BindingResult rs,
+	 * @PostMapping("/save") public String saveRequest(@Valid @ModelAttribute
+	 * ServiceRequest request, BindingResult rs,
 	 * 
-	 * @RequestParam("file") MultipartFile file,
-	 * RedirectAttributes rd) {
-	 * // run validations first
+	 * @RequestParam("file") MultipartFile file, RedirectAttributes rd) { // run
+	 * validations first
 	 * 
-	 * if (rs.hasErrors()) {
-	 * rd.addFlashAttribute("validationErrors", rs.getAllErrors());
-	 * return "redirect:/requests/create";
+	 * if (rs.hasErrors()) { rd.addFlashAttribute("validationErrors",
+	 * rs.getAllErrors()); return "redirect:/requests/create";
 	 * 
 	 * }
 	 * 
 	 * // Validate child entities
 	 * 
 	 * if (request.getVehicleModel().getModelId() == 0) {
-	 * rd.addFlashAttribute("error", "Please select a valid vehicle model");
-	 * return "redirect:/requests/create";
-	 * }
+	 * rd.addFlashAttribute("error", "Please select a valid vehicle model"); return
+	 * "redirect:/requests/create"; }
 	 * 
 	 * if (request.getServiceSubType().getServiceSubTypeId() == 0) {
 	 * rd.addFlashAttribute("error", "Please select a valid service sub type");
-	 * return "redirect:/requests/create";
-	 * }
+	 * return "redirect:/requests/create"; }
 	 * 
 	 * 
-	 * // Upload file only if present
-	 * if(file != null && !file.isEmpty()) {
-	 * String contentType = file.getContentType();
+	 * // Upload file only if present if(file != null && !file.isEmpty()) { String
+	 * contentType = file.getContentType();
 	 * 
-	 * // check file type
-	 * if (contentType == null ||
-	 * !(contentType.equals("image/png") ||
-	 * contentType.equals("image/jpg") ||
-	 * contentType.equals("image/jpeg") ||
-	 * contentType.equals("application/pdf"))) {
+	 * // check file type if (contentType == null ||
+	 * !(contentType.equals("image/png") || contentType.equals("image/jpg") ||
+	 * contentType.equals("image/jpeg") || contentType.equals("application/pdf"))) {
 	 * 
 	 * rd.addFlashAttribute("error", "Only PNG, JPG, JPEG, PDF files allowed");
-	 * return "redirect:/requests/create";
-	 * }
-	 * String uploadedFileName = fileUtil.uploadFile(file);
-	 * request.setAttachmentPath(uploadedFileName);
-	 * }
+	 * return "redirect:/requests/create"; } String uploadedFileName =
+	 * fileUtil.uploadFile(file); request.setAttachmentPath(uploadedFileName); }
 	 * 
-	 * // proceed to save after validations
-	 * ServiceRequest savedRequest = serviceRequestService.saveRequest(request);
-	 * String msg = savedRequest.getCustomerName() +
-	 * ", your request is being processed";
-	 * rd.addFlashAttribute("msg", msg);
-	 * return "redirect:/requests/create";
+	 * // proceed to save after validations ServiceRequest savedRequest =
+	 * serviceRequestService.saveRequest(request); String msg =
+	 * savedRequest.getCustomerName() + ", your request is being processed";
+	 * rd.addFlashAttribute("msg", msg); return "redirect:/requests/create";
 	 * 
 	 * }
 	 */
@@ -140,56 +121,45 @@ public class VehicleServiceRequestController {
 	@GetMapping("/download")
 	public ResponseEntity<Resource> downloadFile(@RequestParam("attachmentPath") String fileName) {
 
-	    try {
-	        Path filePath = Paths.get(fileUtil.getDirPath() + fileName);
-	        Resource resource = new UrlResource(filePath.toUri());
+		try {
+			Path filePath = Paths.get(fileUtil.getDirPath() + fileName);
+			Resource resource = new UrlResource(filePath.toUri());
 
-	        if (!resource.exists()) {
-	            return ResponseEntity.notFound().build();
-	        }
+			if (!resource.exists()) {
+				return ResponseEntity.notFound().build();
+			}
 
-	        return ResponseEntity.ok()
-	                .header(HttpHeaders.CONTENT_DISPOSITION,
-	                        "attachment; filename=" + resource.getFilename())
-	                .body(resource);
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
+					.body(resource);
 
-	    } catch (Exception e) {
-	        throw new RuntimeException("Error downloading file", e);
-	    }
+		} catch (Exception e) {
+			throw new RuntimeException("Error downloading file", e);
+		}
 	}
 }
-
 
 /*
  * // get requests list
  * 
- * @GetMapping("")
- * public String getServiceRequests(Model model, RedirectAttributes rd) {
- * List<ServiceRequest> requests = serviceRequestService.getAllRequests();
+ * @GetMapping("") public String getServiceRequests(Model model,
+ * RedirectAttributes rd) { List<ServiceRequest> requests =
+ * serviceRequestService.getAllRequests();
  * 
- * // if null(no request), return an empty list
- * if (requests == null) {
- * requests = Collections.emptyList();
- * String msg ="nothing to display here";
- * rd.addFlashAttribute("msg",msg);
- * }
+ * // if null(no request), return an empty list if (requests == null) { requests
+ * = Collections.emptyList(); String msg ="nothing to display here";
+ * rd.addFlashAttribute("msg",msg); }
  * 
- * model.addAttribute("requests", requests);
- * return "list";
- * }
+ * model.addAttribute("requests", requests); return "list"; }
  * 
  * // delete =vsreqs/requests/delete/serviceRequestId
  * 
- * @GetMapping("/delete")
- * public String deleteRequest(@RequestParam("serviceRequestId") Integer
- * serviceRequestId,
+ * @GetMapping("/delete") public String
+ * deleteRequest(@RequestParam("serviceRequestId") Integer serviceRequestId,
  * RedirectAttributes rd) {
- * serviceRequestService.deleteRequestById(serviceRequestId);
- * String msg = "Request deleted successfully";
- * rd.addFlashAttribute("msg", msg);
- * //return "list";
- * return "redirect:/requests";
- * }
+ * serviceRequestService.deleteRequestById(serviceRequestId); String msg =
+ * "Request deleted successfully"; rd.addFlashAttribute("msg", msg); //return
+ * "list"; return "redirect:/requests"; }
  * 
  * }
  */

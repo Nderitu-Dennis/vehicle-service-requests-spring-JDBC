@@ -10,18 +10,19 @@ public class VehicleServiceRequestsJDBCApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VehicleServiceRequestsJDBCApplication.class, args);
+//		todo-why flash attributes are appearing unnecessarily
 	}
-	
-	//todo-check cascading ajax fields-the 2nd ones
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+

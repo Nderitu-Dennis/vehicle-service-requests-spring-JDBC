@@ -43,24 +43,23 @@
 			<div class="card-header h2 bg-info">Vehicle Service Request
 				Form</div>
 			<div class="card-body">
-				<form id="serviceRequestForm" action="/vsreqs/requests/save"
+				<form id="serviceRequestForm" action="/vsreqsjdbc/requests/save"
 					method="post" enctype="multipart/form-data">
-					<!-- manufacturer Dropdown -->
 					<div class="row">
 
 
 						<!-- customer name -->
 						<div class="col-4 mb-3">
-							<label for="customerName" class="font-weight-bold">Customer
-								Name</label> <input type="text" name="customerName" id="customerName"
+							<label for="customer_name" class="font-weight-bold">Customer
+								Name</label> <input type="text" name="customer_name" id="customer_name"
 								class="form-control" required minlength="3"
 								pattern="[A-Za-z\s]+"
 								title="Must contain only letters and at least 3 characters ">
 						</div>
 
 						<div class="col-4 mb-3">
-							<label for="manufacturer_id" class="font-weight-bold">Manufacturer</label>
-							<select id="manufacturer_id" name="manufacturer.manufacturer_id"
+							<label for="manufacturerId" class="font-weight-bold">Manufacturer</label>
+							<select id="manufacturerId" name="manufacturer_id"
 								class="form-control" required>
 								<option value="">-select-</option>
 								<c:forEach items="${manufacturers}" var="m">
@@ -73,22 +72,22 @@
 
 						<!-- model Dropdown -->
 						<div class="col-4 mb-3">
-							<label for="modelId" class="font-weight-bold">Model</label> <select
-								id="modelId" name="vehicleModel.modelId" class="form-control"
+							<label for="model_id" class="font-weight-bold">Model</label> <select
+								id="model_id" name="model_id" class="form-control"
 								required>
 								<option value="">-select-</option>
 							</select>
 							<div class="invalid-feedback">Please select a model</div>
 						</div>
+						
 					</div>
 
 					<div class="row">
 						<!-- service type Dropdown -->
 						<div class="col-6 mb-3">
-							<label for="serviceTypeId" class="font-weight-bold">Service
-								Type </label> <select id="serviceTypeId"
-								name="serviceType.serviceTypeId" class="form-control" required>
-								<!-- check on this object things -->
+							<label for="service_type_id" class="font-weight-bold">Service
+								Type </label> <select id="service_type_id"
+								name="service_type_id" class="form-control" required>
 								<option value="">-select-</option>
 								<c:forEach items="${serviceTypes}" var="s">
 									<option value="${s.service_type_id}">${s.service_type_name}</option>
@@ -102,9 +101,9 @@
 
 						<!--service sub type -->
 						<div class="col-6 mb-3">
-							<label for="serviceSubTypeId" class="font-weight-bold">
-								Sub Type</label> <select id="serviceSubTypeId"
-								name="serviceSubType.serviceSubTypeId" class="form-control"
+							<label for="service_subtype_id" class="font-weight-bold">
+								Sub Type</label> <select id="service_subtype_id"
+								name="service_subtype_id" class="form-control"
 								required>
 								<option value="">-select-</option>
 							</select>
@@ -135,8 +134,8 @@
              Otherwise hide it.-->
 						<div class="col-4 mb-3" id="scheduledDateWrapper"
 							style="display: none;">
-							<label for="scheduledDate" class="font-weight-bold">Schedule
-								date</label> <input type="date" name="scheduledDate" id="scheduledDate"
+							<label for="scheduled_date" class="font-weight-bold">Schedule
+								date</label> <input type="date" name="scheduled_date" id="scheduled_date"
 								class="form-control">
 						</div>
 
@@ -219,23 +218,23 @@
 	
 	<!-- AJAX-->
 
-	$("#manufacturerId").change(function(e){
+	$("#manufacturer_id").change(function(e){
 		
 		$.ajax({
-			  url: "http://localhost:8090/vsreqs/requests/models", //backend endpoint
+			  url: "http://localhost:8090/vsreqsjdbc/requests/models", //backend endpoint
 			  type: "GET",  //GET req-params appended to the url & fetched by #RequestParam
 			  data: {
-				  manufacturerId : $(this).val()		     
+				  manufacturer_id : $(this).val()		     
 			  },
 			  success: function(response) { //returns JSON response
 				  console.log(response)
 				  
-			      var modelId=$("#modelId");  
-			      $(modelId).find("option").remove(); //clears all existing options
-			      $(modelId).append("<option value='0'>-select-</option>") //adds the default select option
+			      var model_id=$("#model_id");  
+			      $(model_id).find("option").remove(); //clears all existing options
+			      $(model_id).append("<option value='0'>-select-</option>") //adds the default select option
 				  $(response).each(function(i,e){
 					  //loops thru each object in the JSON res, i is index & e is teams object here
-					      $(modelId).append("<option value='"+e.modelId+"'>"+e.modelName+"</option>");
+					      $(model_id).append("<option value='"+e.model_id+"'>"+e.model_name+"</option>");
 			      });
 			  },
 			  error: function(xhr, status, error) {
