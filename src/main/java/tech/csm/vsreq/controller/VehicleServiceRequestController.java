@@ -22,6 +22,7 @@ import tech.csm.vsreq.model.ServiceRequest;
 import tech.csm.vsreq.model.ServiceSubType;
 import tech.csm.vsreq.model.VehicleModel;
 import tech.csm.vsreq.service.ManufacturerService;
+import tech.csm.vsreq.service.ServiceSubTypeService;
 import tech.csm.vsreq.service.ServiceTypeService;
 import tech.csm.vsreq.service.VehicleModelService;
 import tech.csm.vsreq.util.FileUtil;
@@ -35,9 +36,12 @@ public class VehicleServiceRequestController {
 
 	@Autowired
 	private ServiceTypeService serviceTypeService;
-	
+
 	@Autowired
 	private VehicleModelService vehicleModelService;
+	
+	@Autowired
+	private ServiceSubTypeService serviceSubTypeService;
 
 	// injecting file util
 	@Autowired
@@ -48,32 +52,28 @@ public class VehicleServiceRequestController {
 	public String createServiceRequest(Model model) {
 		model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 		model.addAttribute("serviceTypes", serviceTypeService.getAllServiceTypes());
-
 		return "form";
 	}
 
-	
-	 // AJAX // get models by manufacturer_id
-	  
-	  @GetMapping("/models")	  
-	  @ResponseBody 
-	  public List<VehicleModel> getVehicleModelsByManufacturerId(@RequestParam("manufacturer_id") Integer
-	  manufacturer_id) { 
-		  System.out.println(">>>models: " + vehicleModelService.getModelsByManufacturerId(manufacturer_id));
+	// AJAX // get models by manufacturer_id
 
-		  return  vehicleModelService.getModelsByManufacturerId(manufacturer_id); 
-		  }
-	  
-	  // Get service sub types by service type id
-	  
-	 /* @GetMapping("/subtypes")
-	 * 
-	 * @ResponseBody public List<ServiceSubType>
-	 * getServiceSubTypeByServiceType(@RequestParam("serviceTypeId") Integer
-	 * serviceTypeId) { return
-	 * serviceSubTypeService.getServiceSubTypeByServiceType(serviceTypeId); }
-	 * 
-	 
+	@GetMapping("/models")
+	@ResponseBody
+	public List<VehicleModel> getVehicleModelsByManufacturerId(
+			@RequestParam("manufacturer_id") Integer manufacturer_id) {
+
+		return vehicleModelService.getModelsByManufacturerId(manufacturer_id);
+	}
+
+	// Get service sub types by service type id
+
+	@GetMapping("/subtypes")
+
+	@ResponseBody
+	public List<ServiceSubType> getServiceSubTypeByServiceTypeId(@RequestParam("service_type_id") Integer service_type_id) {
+		return serviceSubTypeService.getServiceSubTypeByServiceTypeId(service_type_id);
+	}
+
 	/*
 	 * // save a request
 	 * 

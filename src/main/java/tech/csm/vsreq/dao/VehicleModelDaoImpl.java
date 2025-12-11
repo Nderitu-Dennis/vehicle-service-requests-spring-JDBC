@@ -28,7 +28,9 @@ public class VehicleModelDaoImpl implements VehicleModelDao {
                     model.setModel_name(rs.getString("model_name"));
                     return model;
                 },
+
                 manufacturer_id
+
                 );
     }
 }

@@ -58,8 +58,8 @@
 						</div>
 
 						<div class="col-4 mb-3">
-							<label for="manufacturerId" class="font-weight-bold">Manufacturer</label>
-							<select id="manufacturerId" name="manufacturer_id"
+							<label for="manufacturer_id" class="font-weight-bold">Manufacturer</label>
+							<select id="manufacturer_id" name="manufacturer_id"
 								class="form-control" required>
 								<option value="">-select-</option>
 								<c:forEach items="${manufacturers}" var="m">
@@ -171,7 +171,7 @@
 	</div>
 
 	<div class="h3 text-warn m-5">
-		Click <a href="/vsreqs/requests"> here </a> to view requests
+		Click <a href="/vsreqsjdbc/requests"> here </a> to view requests
 	</div>
 
 	<!-- script for conditional UI if priority='scheduled' show date -->
@@ -219,12 +219,14 @@
 	<!-- AJAX-->
 
 	$("#manufacturer_id").change(function(e){
-		
+		  console.log($(this).val())
+
 		$.ajax({
 			  url: "http://localhost:8090/vsreqsjdbc/requests/models", //backend endpoint
 			  type: "GET",  //GET req-params appended to the url & fetched by #RequestParam
 			  data: {
-				  manufacturer_id : $(this).val()		     
+				  manufacturer_id : $("#manufacturer_id").val()	
+
 			  },
 			  success: function(response) { //returns JSON response
 				  console.log(response)
@@ -245,22 +247,22 @@
 
 	
 
-$("#serviceTypeId").change(function(e){
+$("#service_type_id").change(function(e){
 		
 		$.ajax({
-			  url: "http://localhost:8090/vsreqs/requests/subtypes",
+			  url: "http://localhost:8090/vsreqsjdbc/requests/subtypes",
 			  type: "GET",
 			  data: {
-				  serviceTypeId: $(this).val()		     
+				  service_type_id: $("#service_type_id").val()		     
 			  },
 			  success: function(response) {
 				  console.log(response)
 				  
-			      var serviceSubTypeId=$("#serviceSubTypeId");
-			      $(serviceSubTypeId).find("option").remove();
-			      $(serviceSubTypeId).append("<option value='0'>-select-</option>")
+			      var service_subtype_id=$("#service_subtype_id");
+			      $(service_subtype_id).find("option").remove();
+			      $(service_subtype_id).append("<option value='0'>-select-</option>")
 				  $(response).each(function(i,e){
-			    	  $(serviceSubTypeId).append("<option value="+e.serviceSubTypeId+">"+e.serviceSubTypeName+"</option>");
+			    	  $(service_subtype_id).append("<option value="+e.service_subtype_id+">"+e.service_subtype_name+"</option>");
 			      });
 			  },
 			  error: function(xhr, status, error) {

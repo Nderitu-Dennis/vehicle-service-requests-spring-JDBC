@@ -17,8 +17,10 @@ public class ServiceTypeDaoImpl implements ServiceTypeDao {
 	@Override
 	public List<ServiceType> getAllServiceTypes() {
 		
-		String sql="SELECT service_type_name FROM service_type";
+		String sql="SELECT service_type_id, service_type_name FROM service_type";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ServiceType.class));
+        
+        //select id & name cz needed by select element
 		
 	}
 
