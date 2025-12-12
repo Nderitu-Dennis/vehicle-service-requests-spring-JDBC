@@ -135,7 +135,8 @@
 						<div class="col-4 mb-3" id="scheduledDateWrapper"
 							style="display: none;">
 							<label for="scheduled_date" class="font-weight-bold">Schedule
-								date</label> <input type="date" name="scheduled_date" id="scheduled_date"
+								date</label> 
+								<input type="date" name="scheduled_date" id="scheduled_date"
 								class="form-control">
 						</div>
 

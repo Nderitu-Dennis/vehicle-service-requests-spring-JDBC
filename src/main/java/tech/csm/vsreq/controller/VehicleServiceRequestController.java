@@ -12,16 +12,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.validation.Valid;
 import tech.csm.vsreq.model.ServiceRequest;
 import tech.csm.vsreq.model.ServiceSubType;
 import tech.csm.vsreq.model.VehicleModel;
 import tech.csm.vsreq.service.ManufacturerService;
+import tech.csm.vsreq.service.ServiceRequestService;
 import tech.csm.vsreq.service.ServiceSubTypeService;
 import tech.csm.vsreq.service.ServiceTypeService;
 import tech.csm.vsreq.service.VehicleModelService;
@@ -39,9 +45,12 @@ public class VehicleServiceRequestController {
 
 	@Autowired
 	private VehicleModelService vehicleModelService;
-	
+
 	@Autowired
 	private ServiceSubTypeService serviceSubTypeService;
+
+	@Autowired
+	private ServiceRequestService serviceRequestService;
 
 	// injecting file util
 	@Autowired
@@ -70,53 +79,60 @@ public class VehicleServiceRequestController {
 	@GetMapping("/subtypes")
 
 	@ResponseBody
-	public List<ServiceSubType> getServiceSubTypeByServiceTypeId(@RequestParam("service_type_id") Integer service_type_id) {
+	public List<ServiceSubType> getServiceSubTypeByServiceTypeId(
+			@RequestParam("service_type_id") Integer service_type_id) {
 		return serviceSubTypeService.getServiceSubTypeByServiceTypeId(service_type_id);
 	}
 
-	/*
-	 * // save a request
-	 * 
-	 * @PostMapping("/save") public String saveRequest(@Valid @ModelAttribute
-	 * ServiceRequest request, BindingResult rs,
-	 * 
-	 * @RequestParam("file") MultipartFile file, RedirectAttributes rd) { // run
-	 * validations first
-	 * 
-	 * if (rs.hasErrors()) { rd.addFlashAttribute("validationErrors",
-	 * rs.getAllErrors()); return "redirect:/requests/create";
-	 * 
-	 * }
-	 * 
-	 * // Validate child entities
-	 * 
-	 * if (request.getVehicleModel().getModelId() == 0) {
-	 * rd.addFlashAttribute("error", "Please select a valid vehicle model"); return
-	 * "redirect:/requests/create"; }
-	 * 
-	 * if (request.getServiceSubType().getServiceSubTypeId() == 0) {
-	 * rd.addFlashAttribute("error", "Please select a valid service sub type");
-	 * return "redirect:/requests/create"; }
-	 * 
-	 * 
-	 * // Upload file only if present if(file != null && !file.isEmpty()) { String
-	 * contentType = file.getContentType();
-	 * 
-	 * // check file type if (contentType == null ||
-	 * !(contentType.equals("image/png") || contentType.equals("image/jpg") ||
-	 * contentType.equals("image/jpeg") || contentType.equals("application/pdf"))) {
-	 * 
-	 * rd.addFlashAttribute("error", "Only PNG, JPG, JPEG, PDF files allowed");
-	 * return "redirect:/requests/create"; } String uploadedFileName =
-	 * fileUtil.uploadFile(file); request.setAttachmentPath(uploadedFileName); }
-	 * 
-	 * // proceed to save after validations ServiceRequest savedRequest =
-	 * serviceRequestService.saveRequest(request); String msg =
-	 * savedRequest.getCustomerName() + ", your request is being processed";
-	 * rd.addFlashAttribute("msg", msg); return "redirect:/requests/create";
-	 * 
-	 * }
-	 */
+	// save a request
+
+	@PostMapping("/save")
+	public String saveRequest(@Valid @ModelAttribute ServiceRequest request, BindingResult rs,
+			@RequestParam("file") MultipartFile file, RedirectAttributes rd) {
+		// run validations first
+
+		if (rs.hasErrors()) {
+			rd.addFlashAttribute("validationErrors", rs.getAllErrors());
+			return "redirect:/requests/create";
+
+		}
+
+		// Validate child entities
+
+		if (request.getModel_id() == 0) {
+			rd.addFlashAttribute("error", "Please select a valid vehicle model");
+			return "redirect:/requests/create";
+		}
+
+		if (request.getService_subtype_id() == 0) {
+			rd.addFlashAttribute("error", "Please select a valid service sub type");
+			return "redirect:/requests/create";
+		}
+
+		
+		 // Upload file only if present
+		if(file != null && !file.isEmpty()) { 
+			String contentType = file.getContentType();
+		// check file type
+		if (contentType == null || !(contentType.equals("image/png") || contentType.equals("image/jpg")
+				|| contentType.equals("image/jpeg") || contentType.equals("application/pdf"))) {
+		  
+		  rd.addFlashAttribute("error", "Only PNG, JPG, JPEG, PDF files allowed");
+		  return "redirect:/requests/create"; }
+		  
+		  String uploadedFileName = fileUtil.uploadFile(file);
+		  request.setAttachment_path(uploadedFileName); }
+		 
+
+		// proceed to save after validations
+		int savedRequest = serviceRequestService.saveRequest(request);
+
+		String msg = request.getCustomer_name() + ", your request has been received";
+		rd.addFlashAttribute("msg", msg);
+		return "redirect:/requests/create";
+
+	}
+
 //	file download 
 	@GetMapping("/download")
 	public ResponseEntity<Resource> downloadFile(@RequestParam("attachmentPath") String fileName) {

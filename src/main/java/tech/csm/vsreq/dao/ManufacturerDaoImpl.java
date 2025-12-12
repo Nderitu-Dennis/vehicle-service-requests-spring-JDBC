@@ -17,7 +17,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
 	@Override
 	public List<Manufacturer> getAllManufacturers() {
-		String sql="SELECT manufacturer_id,manufacturer_name FROM manufacturer";
+		String sql="SELECT * FROM manufacturer";
 		//important to select fields needed by the view select element, esp id & name
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Manufacturer.class));
 		
