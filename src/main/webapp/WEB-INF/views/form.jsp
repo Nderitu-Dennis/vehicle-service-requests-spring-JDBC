@@ -273,67 +273,7 @@ $("#service_type_id").change(function(e){
 	});
 	
 	
-	<!--Refactored AJAX to handle edits/updates	-->
-	<!--
-	function loadTeams(departmentId, selectedTeamId, selectedProjectId) {
-	    $.ajax({
-	        url: "http://localhost:8089/prjct/teams-by-department-id",
-	        type: "GET",
-	        data: { departmentId: departmentId },
-	        success: function(response) {
-	            let team = $("#teamId");
-	            team.empty().append("<option value='0'>-select-</option>");
-	            $(response).each(function(i, t){
-	                let selected = t.teamId == selectedTeamId ? "selected" : "";
-	                team.append("<option "+selected+" value='"+t.teamId+"'>"+t.teamName+"</option>");
-	            });
-	            if(selectedTeamId > 0) {
-	                loadProjects(selectedTeamId, selectedProjectId);
-	            }
-	        }
-	    });
-	}
 
-	function loadProjects(teamId, selectedProjectId) {
-	    $.ajax({
-	        url: "http://localhost:8089/prjct/projects-by-team-id",
-	        type: "GET",
-	        data: { teamId: teamId },
-	        success: function(response) {
-	            let project = $("#projectId");
-	            project.empty().append("<option value='0'>-select-</option>");
-	            $(response).each(function(i, p){
-	                let selected = p.projectId == selectedProjectId ? "selected" : "";
-	                project.append("<option "+selected+" value='"+p.projectId+"'>"+p.projectName+"</option>");
-	            });
-	        }
-	    });
-	}
-	
-	<!--Trigger AJAX on page load (for update mode)-->
-	<!--
-	$(document).ready(function(){
-	    var deptId = $("#departmentId").val();
-	    var selectedTeamId = "${selectedTeamId}";
-	    var selectedProjectId = "${selectedProjectId}";
-
-	    if(deptId > 0){
-	        loadTeams(deptId, selectedTeamId, selectedProjectId);
-	    }
-	});
-	
-	<!--Keep change events for dynamic updates-->
-	<!--
-	$("#departmentId").change(function(){
-	    loadTeams($(this).val(), 0, 0); // new selection â no pre-selection
-	});
-
-	$("#teamId").change(function(){
-	    loadProjects($(this).val(), 0); // new selection â no pre-selection
-	});
-
-
--->
 
 </script>
 

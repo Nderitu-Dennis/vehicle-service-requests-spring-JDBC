@@ -46,21 +46,24 @@
 				
 					<tr>
 						<td>${counter.count}</td>
-						<td>${a.customerName}</td>
-						<td>${a.manufacturer.manufacturerName}</td>
-						<td>${a.vehicleModel.modelName}</td>
-						<td>${a.serviceType.serviceTypeName}</td>
-						<td>${a.serviceSubType.serviceSubTypeName}</td>
+						<td>${a.customer_name}</td>
+						<td>${a.manufacturer_name}</td>
+						<td>${a.model_name}</td>
+						<td>${a.service_type_name}</td>
+						<td>${service_subtype_name}</td>
 						<td>${a.priority}</td>
-						<td>${a.scheduledDate}</td>	
-						<td><a href="/vsreqs/requests/download?attachmentPath=${a.attachmentPath}">${a.attachmentPath} </a></td>						
-											
-						<td>${a.createdAt}</td>
+						<td>${a.scheduled_date}</td>
+						<td><a
+							href="/vsreqsjdbc/requests/download?attachment_path=${a.attachment_path}">${a.attachment_path}
+						</a>
+						</td>
+						<td>${a.created_at}</td>
 
 
 						<td><a
-							href="/vsreqs/requests/delete?serviceRequestId=${a.serviceRequestId}"
-							class="text-danger">Delete</a></td>
+							href="/vsreqsjdbc/requests/delete?service_request_id=${a.service_request_id}"
+							class="text-danger">Delete</a>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -69,7 +72,7 @@
 	</div>
 
 	<div class="h3 text-warn m-5">
-		Click <a href="/vsreqs/requests/create"> here </a> to apply for a
+		Click <a href="/vsreqsjdbc/requests/create"> here </a> to apply for a
 		service request
 	</div>
 

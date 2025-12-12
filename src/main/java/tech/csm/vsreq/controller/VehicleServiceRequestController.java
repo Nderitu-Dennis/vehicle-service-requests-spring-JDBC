@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+import tech.csm.vsreq.dto.ServiceRequestDto;
 import tech.csm.vsreq.model.ServiceRequest;
 import tech.csm.vsreq.model.ServiceSubType;
 import tech.csm.vsreq.model.VehicleModel;
@@ -51,14 +52,14 @@ public class VehicleServiceRequestController {
 
 	@Autowired
 	private ServiceRequestService serviceRequestService;
-
-	// injecting file util
+	
+		// injecting file util
 	@Autowired
 	private FileUtil fileUtil;
 
 	// create service request form
 	@GetMapping("/create")
-	public String createServiceRequest(Model model) {
+	public String createServiceRequest(Model model) { //Model-Pass data from the controller to the view
 		model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
 		model.addAttribute("serviceTypes", serviceTypeService.getAllServiceTypes());
 		return "form";
@@ -85,7 +86,12 @@ public class VehicleServiceRequestController {
 	}
 
 	// save a request
-
+/*
+ * @ModelAttribute-here used as a method param
+ * Bind HTTP request form data to a Java object (model/entity/DTO) automatically
+ * in the saveRequest method below, 'request' object now contains all form data automatically mapped
+ * Binds form data with a Bean-Data binding, no need to parse each form field individually
+ * */
 	@PostMapping("/save")
 	public String saveRequest(@Valid @ModelAttribute ServiceRequest request, BindingResult rs,
 			@RequestParam("file") MultipartFile file, RedirectAttributes rd) {
@@ -153,23 +159,28 @@ public class VehicleServiceRequestController {
 			throw new RuntimeException("Error downloading file", e);
 		}
 	}
-}
 
-/*
- * // get requests list
- * 
- * @GetMapping("") public String getServiceRequests(Model model,
- * RedirectAttributes rd) { List<ServiceRequest> requests =
- * serviceRequestService.getAllRequests();
- * 
- * // if null(no request), return an empty list if (requests == null) { requests
- * = Collections.emptyList(); String msg ="nothing to display here";
- * rd.addFlashAttribute("msg",msg); }
- * 
- * model.addAttribute("requests", requests); return "list"; }
- * 
- * // delete =vsreqs/requests/delete/serviceRequestId
- * 
+
+ // get requests list
+ 
+	@GetMapping("")
+	public String getServiceRequests(Model model) {
+		List<ServiceRequestDto> requests = serviceRequestService.getAllRequestsView();
+
+		// if null(no request), return an empty list
+		if (requests == null) {
+			requests = Collections.emptyList();
+		}
+
+		model.addAttribute("requests", requests);
+
+		return "list";
+	}
+  
+  }
+  
+ // delete =vsreqs/requests/delete/serviceRequestId
+ /* 
  * @GetMapping("/delete") public String
  * deleteRequest(@RequestParam("serviceRequestId") Integer serviceRequestId,
  * RedirectAttributes rd) {
