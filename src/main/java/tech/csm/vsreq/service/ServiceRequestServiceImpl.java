@@ -34,4 +34,9 @@ public class ServiceRequestServiceImpl implements ServiceRequestService {
 
 	}
 
+	@Override
+	public int deleteRequestById(Integer service_request_id) {
+		return serviceRequestDao.deleteRequestById(service_request_id);
+	}
+
 }

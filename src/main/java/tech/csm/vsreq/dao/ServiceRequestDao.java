@@ -13,4 +13,6 @@ public interface ServiceRequestDao {
 
 	List<ServiceRequestDto> getAllRequestsView();
 
+	int deleteRequestById(Integer service_request_id);
+
 }

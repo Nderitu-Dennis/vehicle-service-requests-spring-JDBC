@@ -177,16 +177,20 @@ public class VehicleServiceRequestController {
 		return "list";
 	}
   
-  }
   
- // delete =vsreqs/requests/delete/serviceRequestId
- /* 
- * @GetMapping("/delete") public String
- * deleteRequest(@RequestParam("serviceRequestId") Integer serviceRequestId,
- * RedirectAttributes rd) {
- * serviceRequestService.deleteRequestById(serviceRequestId); String msg =
- * "Request deleted successfully"; rd.addFlashAttribute("msg", msg); //return
- * "list"; return "redirect:/requests"; }
- * 
- * }
- */
+  
+ // delete =vsreqs/requests/delete/service_request_id
+
+@GetMapping("/delete")
+public String deleteRequest(@RequestParam("service_request_id") Integer service_request_id, RedirectAttributes rd) {
+	serviceRequestService.deleteRequestById(service_request_id);
+	String msg = "Request delete success";
+	rd.addFlashAttribute("msg", msg);
+	return "redirect:/requests";
+  }
+
+//Use a direct view return when fetching data for display -return "form"
+//Use a redirect after save, update, or del operations to prevent duplicate submissions. - return "redirect:/requests"
+
+  
+  }

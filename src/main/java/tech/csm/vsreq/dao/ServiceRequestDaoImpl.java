@@ -17,6 +17,8 @@ import tech.csm.vsreq.model.ServiceRequest;
 @Repository
 public class ServiceRequestDaoImpl implements ServiceRequestDao {
 	
+	//for DML operations we use jdbcTemplate.update, for select .query
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -93,6 +95,13 @@ public class ServiceRequestDaoImpl implements ServiceRequestDao {
 	            }
 	        });
 	    }
+
+	@Override
+	public int deleteRequestById(Integer service_request_id) {
+		String sql= "DELETE FROM service_request WHERE service_request_id = ? ";
+        return jdbcTemplate.update(sql, service_request_id );
+
+	}
 	
 	}
 
