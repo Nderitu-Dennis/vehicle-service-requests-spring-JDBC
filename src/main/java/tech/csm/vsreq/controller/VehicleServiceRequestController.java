@@ -141,7 +141,7 @@ public class VehicleServiceRequestController {
 
 //	file download 
 	@GetMapping("/download")
-	public ResponseEntity<Resource> downloadFile(@RequestParam("attachmentPath") String fileName) {
+	public ResponseEntity<Resource> downloadFile(@RequestParam("attachment_path") String fileName) {
 
 		try {
 			Path filePath = Paths.get(fileUtil.getDirPath() + fileName);

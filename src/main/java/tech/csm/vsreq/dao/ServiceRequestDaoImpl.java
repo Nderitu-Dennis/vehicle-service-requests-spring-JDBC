@@ -47,6 +47,15 @@ public class ServiceRequestDaoImpl implements ServiceRequestDao {
 		String sql="SELECT * FROM service_request";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ServiceRequest.class));
 	}
+	
+	/*
+	 *BeanPropertyRowMapper- used when 1. Column names match Java field names
+									 2. No joins or computed columns exist
+									3. One table ↔ one entity 
+	* custom RowMapper-as used below in the dto due to joined reads
+	* 								
+									
+*/
 
 	@Override
 	public List<ServiceRequestDto> getAllRequestsView() {
@@ -100,6 +109,12 @@ public class ServiceRequestDaoImpl implements ServiceRequestDao {
 	public int deleteRequestById(Integer service_request_id) {
 		String sql= "DELETE FROM service_request WHERE service_request_id = ? ";
         return jdbcTemplate.update(sql, service_request_id );
+        
+        /*can also do this for logs
+         * int status = jdbcTemplate.update(sql, empId);
+    if(status != 0){
+        System.out.println("Employee data deleted for ID " + empId);
+         */
 
 	}
 	
